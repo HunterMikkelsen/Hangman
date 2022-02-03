@@ -24,19 +24,17 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\src\app\hangman\**" />
-    <Compile Remove="ClientApp\src\app\NewFolder\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\src\app\hangman\**" />
-    <Content Remove="ClientApp\src\app\NewFolder\**" />
     <EmbeddedResource Remove="ClientApp\src\app\hangman\**" />
-    <EmbeddedResource Remove="ClientApp\src\app\NewFolder\**" />
     <None Remove="$(SpaRoot)**" />
     <None Remove="ClientApp\src\app\hangman\**" />
-    <None Remove="ClientApp\src\app\NewFolder\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\src\app\angular-models\" />
+    <Folder Include="ClientApp\src\app\Services\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
