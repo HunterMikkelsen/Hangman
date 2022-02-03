@@ -13,9 +13,6 @@ namespace hangman.Controllers
 			return View();
 		}
 
-		// This is where we will create functions to grab data (typically from the DB)
-		// can also have functions to post data to the DB here
-
 		// with a post request we're just going to send a generic result back to the front end, basically just says
 		// that the post request was successful
 		[HttpPost]
