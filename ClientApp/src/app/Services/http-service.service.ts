@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { WeatherForecast } from '../angular-models/weather-forecast.model';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 
 @Injectable({
@@ -16,6 +16,15 @@ export class HttpServiceService {
     // notice the format of the string you're passing as a param: (NameOfController/NameOfFunction)
     return this.http.get<WeatherForecast[]>('WeatherForecast/GetWeather')
       .pipe(catchError(err => this.handleError('Error getting weather data', err)));
+  }
+
+  public highScores = [];
+
+  GetHighScores() {
+    return this.http.get<[]>('Hangman/GetHighScores')
+      .pipe(map(data => {
+        this.highScores = data;
+      }));
   }
 
   private handleError(message: string, error: HttpErrorResponse) {
