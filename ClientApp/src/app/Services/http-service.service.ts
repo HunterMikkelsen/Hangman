@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {  Injectable } from '@angular/core';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Login } from '../angular-models/login.model';
 
@@ -16,6 +16,15 @@ export class HttpServiceService {
   SignUpForAccount(login: Login): Observable<boolean> {
     return this.http.post<boolean>('Hangman/SignUpForAccount', login)
       .pipe(catchError(err => this.handleError('Error signing up for account', err)));
+  }
+
+  public highScores = [];
+
+  GetHighScores() {
+    return this.http.get<[]>('Hangman/GetHighScores')
+      .pipe(map(data => {
+        this.highScores = data;
+      }));
   }
 
   private handleError(message: string, error: HttpErrorResponse) {

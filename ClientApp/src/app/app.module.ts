@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { HangmanGameComponent } from './hangman-game/hangman-game.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { HttpServiceService } from './Services/http-service.service';
 
 @NgModule({
   declarations: [

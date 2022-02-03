@@ -1,4 +1,5 @@
 ﻿using hangman.Blls;
+using hangman.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -49,6 +50,12 @@ namespace hangman.Controllers
 
 			return new JsonResult(userAdded);
 		} 
+
+		[HttpGet]
+		public JsonResult GetHighScores()
+        {
+			return new JsonResult(_bll.GetHighScores());
+        }
 
 	}
 }
