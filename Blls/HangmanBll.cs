@@ -57,9 +57,15 @@ namespace hangman.Blls
             // salt and hash password, add to database
             try
             {
+				if(_ctx.Users.Select(u => u.Username).Contains(login.Username))
+				{
+					// username already exists!
+					return false;
+				}
+
                 var salt = GenerateSalt();
-                var password = GenerateHash(login.password + salt);
-                var user = new User { Username = login.username, Password = password, Salt = salt };
+                var password = GenerateHash(login.Password + salt);
+                var user = new User { Username = login.Username, Password = password, Salt = salt };
                 _ctx.Users.Add(user);
                 return _ctx.SaveChanges() > 0;
             }
@@ -78,9 +84,9 @@ namespace hangman.Blls
             try
             {
                 var user = _ctx.Users
-                    .Where(user => user.Username == login.username)
+                    .Where(user => user.Username == login.Username)
                     .ToList();
-                var password = GenerateHash(login.password + user[0].Salt);
+                var password = GenerateHash(login.Password + user[0].Salt);
                 return (password == user[0].Password);
             }
             catch
@@ -91,7 +97,7 @@ namespace hangman.Blls
 
 
         // Generate random salt
-        public static string GenerateSalt()
+        public string GenerateSalt()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable.Repeat(chars, 5)
@@ -100,7 +106,7 @@ namespace hangman.Blls
 
 
         // Generate sha256 hash for given string
-        public static string GenerateHash(string str)
+        public string GenerateHash(string str)
         {
             var sb = new StringBuilder();
 
