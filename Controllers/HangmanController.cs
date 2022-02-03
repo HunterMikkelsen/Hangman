@@ -43,6 +43,13 @@ namespace hangman.Controllers
 			return new JsonResult(result);
 		}
 
+		[HttpPost]
+		public JsonResult SignUpForAccount([FromBody] Login login)
+		{
+			bool userAdded = _bll.AddUser(login);
+
+			return new JsonResult(userAdded);
+		} 
 
 		[HttpGet]
 		public JsonResult GetHighScores()

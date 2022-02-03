@@ -7,8 +7,16 @@ namespace hangman
 {
     public class Login
     {
-        public string username { get; set; }
-        public string password { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+		public Login() {}
+
+		public Login(string username, string password)
+		{
+			Username = username;
+			Password = password;
+		}
 
     }
 }
