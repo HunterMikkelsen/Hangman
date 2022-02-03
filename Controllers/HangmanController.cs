@@ -1,4 +1,5 @@
 ﻿using hangman.Blls;
+using hangman.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -6,7 +7,6 @@ namespace hangman.Controllers
 {
 	public class HangmanController : Controller
 	{
-		HangmanBll hangmanBll = new HangmanBll();
 
 		public IActionResult Index()
 		{

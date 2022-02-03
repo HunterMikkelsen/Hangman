@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore.Design;
 using hangman.Data;
+using hangman.Blls;
 
 namespace hangman
 {
@@ -25,7 +26,7 @@ namespace hangman
             
             services.AddDbContext<HangmanContext>();
 
-            services.AddScoped<IHangmanRepository, HangmanRepository>();
+            services.AddScoped<HangmanBll>();
 
             services.AddControllersWithViews();
 
