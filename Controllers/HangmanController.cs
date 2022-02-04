@@ -54,7 +54,9 @@ namespace hangman.Controllers
 		[HttpGet]
 		public JsonResult GetHighScores()
         {
-			return new JsonResult(_bll.GetHighScores());
+			var thing = _bll.GetHighScores();
+
+			return new JsonResult(thing);
         }
 
 	}

@@ -3,6 +3,7 @@ import {  Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Login } from '../angular-models/login.model';
+import { HighScore } from '../angular-models/highscore.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,14 +19,19 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error signing up for account', err)));
   }
 
-  public highScores = [];
-
-  GetHighScores() {
-    return this.http.get<[]>('Hangman/GetHighScores')
-      .pipe(map(data => {
-        this.highScores = data;
-      }));
+  GetHighScores(): Observable<HighScore[]> {
+    return this.http.get<HighScore[]>('Hangman/GetHighScores')
+      .pipe(catchError(err => this.handleError('Error getting high score data', err)));
   }
+
+  //public highScores = [];
+
+  //GetHighScores() {
+  //  return this.http.get<[]>('Hangman/GetHighScores')
+  //    .pipe(map(data => {
+  //      this.highScores = data;
+  //    }));
+  //}
 
   private handleError(message: string, error: HttpErrorResponse) {
 

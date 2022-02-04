@@ -57,7 +57,7 @@ namespace hangman.Blls
             // salt and hash password, add to database
             try
             {
-				if(_ctx.Users.Select(u => u.Username).Contains(login.Username))
+				if (_ctx.Users.Select(u => u.Username).Contains(login.Username))
 				{
 					// username already exists!
 					return false;

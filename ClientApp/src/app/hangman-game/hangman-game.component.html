@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <!-- need to check for high score in table, highlight row -->
-        <tr *ngFor="let score of http.highScores; let i = index">
+        <tr *ngFor="let score of highScores; let i = index">
           <th scope="row" class="text-center">{{ i + 1 }}</th>
           <td class="text-center">{{ score.user.username }}</td>
           <td class='text-center'>{{ score.score }}</td>

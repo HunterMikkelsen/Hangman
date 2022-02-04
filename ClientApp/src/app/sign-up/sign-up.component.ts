@@ -32,6 +32,16 @@ export class SignUpComponent implements OnInit {
 
       this.httpService.SignUpForAccount(this.login).subscribe(loginCreated => {
         this.accountCreated = loginCreated;
+
+        if (!this.accountCreated) {
+          this.login.Password = "";
+          this.passwordCheck = "";
+        }
+        else {
+          this.login.Username = "";
+          this.login.Password = "";
+          this.passwordCheck = "";
+        }
       });
     }
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HighScore } from '../angular-models/highscore.model';
 import { HttpServiceService } from '../Services/http-service.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { HttpServiceService } from '../Services/http-service.service';
 })
 export class HangmanGameComponent implements OnInit {
 
+  highScores: HighScore[];
   // calls things before/while the page loads
   constructor(public http: HttpServiceService) {
   }
@@ -15,7 +17,9 @@ export class HangmanGameComponent implements OnInit {
   // any function calls inside of ngOnInit happen after the page has fully loaded all the data from the constructor
   ngOnInit(): void {
     this.http.GetHighScores()
-      .subscribe();
+      .subscribe(highScores => {
+        this.highScores = highScores;
+      });
   }
 
 }
