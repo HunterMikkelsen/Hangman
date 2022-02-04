@@ -9,17 +9,19 @@ import { HttpServiceService } from '../Services/http-service.service';
 })
 export class HangmanGameComponent implements OnInit {
 
-  highScores: HighScore[];
+  public highScores: HighScore[];
+
   // calls things before/while the page loads
   constructor(public http: HttpServiceService) {
+    this.http.GetHighScores()
+      .subscribe(h => {
+        this.highScores = h;
+      });
   }
 
   // any function calls inside of ngOnInit happen after the page has fully loaded all the data from the constructor
   ngOnInit(): void {
-    this.http.GetHighScores()
-      .subscribe(highScores => {
-        this.highScores = highScores;
-      });
+
   }
 
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using hangman.Data;
 using hangman.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 // this is where all the actual logic for the hangman game should go that requires the backend's help
 // typical examples would be any validation functions, or logic that you wouldn't want on the front end
@@ -31,6 +32,8 @@ namespace hangman.Blls
         public IEnumerable<HighScore> GetHighScores()
         {
             return _ctx.HighScores
+				.Select(h => h)
+				.Include(h => h.User)
                 .OrderBy(score => score.Score)
                 .ToList();
         }
