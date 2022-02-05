@@ -24,14 +24,17 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error getting high score data', err)));
   }
 
-  //public highScores = [];
+  public token = "";
+  public expiration = new Date();
 
-  //GetHighScores() {
-  //  return this.http.get<[]>('Hangman/GetHighScores')
-  //    .pipe(map(data => {
-  //      this.highScores = data;
-  //    }));
-  //}
+  get LoginRequired(): boolean {
+    return this.token.length === 0 || this.expiration < new Date();
+  }
+
+  LoginUser(login: Login): Observable<boolean> {
+    return this.http.post<boolean>('Hangman/LoginUser', login)
+      .pipe(catchError(err => this.handleError('Error signing up for account', err)));
+  }
 
   private handleError(message: string, error: HttpErrorResponse) {
 

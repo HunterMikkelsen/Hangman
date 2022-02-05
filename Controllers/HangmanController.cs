@@ -51,6 +51,15 @@ namespace hangman.Controllers
 			return new JsonResult(userAdded);
 		} 
 
+		[HttpPost]
+		public JsonResult LoginUser([FromBody] Login login)
+        {
+			bool userValid = _bll.VerifyUser(login);
+
+			return new JsonResult(userValid);
+        }
+
+
 		[HttpGet]
 		public JsonResult GetHighScores()
         {

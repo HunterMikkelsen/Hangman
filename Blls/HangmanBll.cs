@@ -88,9 +88,9 @@ namespace hangman.Blls
             {
                 var user = _ctx.Users
                     .Where(user => user.Username == login.Username)
-                    .ToList();
-                var password = GenerateHash(login.Password + user[0].Salt);
-                return (password == user[0].Password);
+                    .FirstOrDefault();
+                var password = GenerateHash(login.Password + user.Salt);
+                return (password == user.Password);
             }
             catch
             {

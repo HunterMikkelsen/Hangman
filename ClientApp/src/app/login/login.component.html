@@ -1,0 +1,18 @@
+<h1>Login</h1>
+
+<div class="alert alert-danger" *ngIf="invalidLogin === true && hasClickedLogin === true">
+  Username or password is incorrect.
+</div>
+<div class="alert alert-success" *ngIf="validLogin === true && hasClickedLogin === true">
+  Signed in successfully. {{ http.token }} {{ http.expiration | date : 'short' }}
+</div>
+
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input id="username" type="text" class="form-control" name="username" [(ngModel)]="login.Username" />
+
+    <label for="password">Password</label>
+    <input id="password" type="password" class="form-control" name="password" [(ngModel)]="login.Password" />
+
+    <input class="btn btn-primary" type="button" value="Login" (click)="loginUser()" />
+  </div>
