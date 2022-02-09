@@ -7,6 +7,12 @@ import { HttpServiceService } from '../Services/http-service.service';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
+  word: string;
+  wordLengthArray: number[];
 
+  constructor() {
+    this.word = "beans";
 
+    this.wordLengthArray = Array(this.word.length).fill(0).map((x, i) => i);
+  }
 }
