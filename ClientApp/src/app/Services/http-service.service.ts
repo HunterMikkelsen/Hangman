@@ -14,6 +14,7 @@ export class HttpServiceService {
   // this is where you'll create methods to do function calls to the controller
 
   SignUpForAccount(login: Login): Observable<boolean> {
+    //Hangman/SignUpForAccount Hangman = hangmancontroller Signupforaccount = signupforaccountt function in hangman controller
     return this.http.post<boolean>('Hangman/SignUpForAccount', login)
       .pipe(catchError(err => this.handleError('Error signing up for account', err)));
   }
