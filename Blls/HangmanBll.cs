@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using hangman.Data;
 using hangman.Data.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 // this is where all the actual logic for the hangman game should go that requires the backend's help
@@ -17,13 +18,15 @@ namespace hangman.Blls
 	{
         // private/static variables
         private readonly HangmanContext _ctx;
+        private readonly HttpContext _http;
         private static Random random;
 
 
         // Bll Constructor
-        public HangmanBll(HangmanContext ctx)
+        public HangmanBll(HangmanContext ctx,HttpContext http)
         {
             _ctx = ctx;
+            _http = http;
             random = new Random();
         }
 
@@ -125,6 +128,30 @@ namespace hangman.Blls
             return sb.ToString();
         }
 
+
+        //Get token
+        public string GetToken()
+        {
+            return _http.Session.GetString("token");
+        }
+
+        //Set token
+        public void SetToken(string username)
+        {
+            _http.Session.SetString("token", username);
+        }
+
+        //Get word
+        public string GetWord()
+        {
+            return _http.Session.GetString("word");
+        }
+
+        //Set word
+        public void SetWord(string word)
+        {
+            _http.Session.SetString("word", word);
+        }
 
     }
 }

@@ -68,5 +68,44 @@ namespace hangman.Controllers
 			return new JsonResult(thing);
         }
 
+
+		[HttpGet]
+		public JsonResult GetToken()
+        {
+			var token = _bll.GetToken();
+
+			return new JsonResult(token);
+        }
+
+        //post token
+        [HttpPost]
+        public JsonResult SetToken([FromBody] string username)
+        {
+
+            _bll.SetToken(username);
+
+            return new JsonResult(true);
+        }
+
+		//get word
+		[HttpGet]
+		public JsonResult GetWord()
+        {
+			var word = _bll.GetWord();
+
+			return new JsonResult(word);
+        }
+
+		//post word
+		[HttpPost]
+		public JsonResult SetWord([FromBody] string word)
+		{
+
+			_bll.SetWord(word);
+
+			return new JsonResult(true);
+		}
+
+
 	}
 }
