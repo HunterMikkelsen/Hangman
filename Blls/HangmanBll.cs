@@ -18,15 +18,16 @@ namespace hangman.Blls
 	{
         // private/static variables
         private readonly HangmanContext _ctx;
-        private readonly HttpContext _http;
+        //private readonly HttpContext _http;
         private static Random random;
 
 
         // Bll Constructor
-        public HangmanBll(HangmanContext ctx,HttpContext http)
+		//public HangmanBll(HangmanContext ctx, HttpContext http)
+        public HangmanBll(HangmanContext ctx)
         {
             _ctx = ctx;
-            _http = http;
+            //_http = http;
             random = new Random();
         }
 
@@ -129,29 +130,29 @@ namespace hangman.Blls
         }
 
 
-        //Get token
-        public string GetToken()
-        {
-            return _http.Session.GetString("token");
-        }
+        ////Get token
+        //public string GetToken()
+        //{
+        //    return _http.Session.GetString("token");
+        //}
 
-        //Set token
-        public void SetToken(string username)
-        {
-            _http.Session.SetString("token", username);
-        }
+        ////Set token
+        //public void SetToken(string username)
+        //{
+        //    _http.Session.SetString("token", username);
+        //}
 
-        //Get word
-        public string GetWord()
-        {
-            return _http.Session.GetString("word");
-        }
+        ////Get word
+        //public string GetWord()
+        //{
+        //    return _http.Session.GetString("word");
+        //}
 
-        //Set word
-        public void SetWord(string word)
-        {
-            _http.Session.SetString("word", word);
-        }
+        ////Set word
+        //public void SetWord(string word)
+        //{
+        //    _http.Session.SetString("word", word);
+        //}
 
     }
 }

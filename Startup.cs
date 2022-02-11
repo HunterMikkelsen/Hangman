@@ -30,7 +30,7 @@ namespace hangman
 
             services.AddControllersWithViews();
 
-            services.AddSession(options => { options.IdleTimeout = System.TimeSpan.FromMinutes(30); });
+           // services.AddSession(options => { options.IdleTimeout = System.TimeSpan.FromMinutes(30); });
             
 
             // In production, the Angular files will be served from this directory
@@ -83,7 +83,7 @@ namespace hangman
                 }
             });
 
-            app.UseSession();
+            //app.UseSession();
         }
     }
 }
