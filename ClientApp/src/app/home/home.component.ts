@@ -28,7 +28,6 @@ export class HomeComponent {
 
   validateLetter(letter: string) {
     if (this.word.includes(letter)) {
-      // add to correctly guessed list
       if (!this.correctlyGuessedLetters.includes(letter)) {
         this.correctlyGuessedLetters.push(letter);
       }
@@ -42,12 +41,9 @@ export class HomeComponent {
 
           startPos = positionOfLetterInWord + 1;
         }
-        
       });
-      
     }
     else {
-      // add to incorrectly guessed list
       if (!this.incorrectlyGuessedLetters.includes(letter)) {
         this.incorrectlyGuessedLetters.push(letter);
       }
