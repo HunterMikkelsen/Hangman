@@ -18,16 +18,16 @@ namespace hangman.Blls
 	{
         // private/static variables
         private readonly HangmanContext _ctx;
-        //private readonly HttpContext _http;
+        private readonly HttpContext _http;
         private static Random random;
 
 
         // Bll Constructor
-		//public HangmanBll(HangmanContext ctx, HttpContext http)
-        public HangmanBll(HangmanContext ctx)
+		public HangmanBll(HangmanContext ctx, IHttpContextAccessor http)
+        //public HangmanBll(HangmanContext ctx)
         {
             _ctx = ctx;
-            //_http = http;
+            _http = http.HttpContext;
             random = new Random();
         }
 
@@ -94,6 +94,7 @@ namespace hangman.Blls
                     .Where(user => user.Username == login.Username)
                     .FirstOrDefault();
                 var password = GenerateHash(login.Password + user.Salt);
+
                 return (password == user.Password);
             }
             catch
@@ -130,29 +131,42 @@ namespace hangman.Blls
         }
 
 
-        ////Get token
-        //public string GetToken()
-        //{
-        //    return _http.Session.GetString("token");
-        //}
+        //get token
+        public string GetToken()
+        {
+            return _http.Session.GetString("Token");
+        }
 
-        ////Set token
-        //public void SetToken(string username)
-        //{
-        //    _http.Session.SetString("token", username);
-        //}
+        //set token
+        public void SetToken(string username)
+        {
+            _http.Session.SetString("Token", username);
+        }
 
-        ////Get word
-        //public string GetWord()
-        //{
-        //    return _http.Session.GetString("word");
-        //}
+        //get expiration
+        public string GetExpiration()
+        {
+            return _http.Session.GetString("Expiration");
+        }
 
-        ////Set word
-        //public void SetWord(string word)
-        //{
-        //    _http.Session.SetString("word", word);
-        //}
+        //set expiration
+        public void SetExpiration(string expiration)
+        {
+            _http.Session.SetString("Expiration", expiration);
+        }
+
+        //get word
+        public string GetWord()
+        {
+            return _http.Session.GetString("Word");
+        }
+
+        //set word
+        public void SetWord(string word)
+        {
+            _http.Session.SetString("Word", word);
+
+        }
 
     }
 }

@@ -10,7 +10,17 @@ import { HighScore } from '../angular-models/highscore.model';
 })
 export class HttpServiceService {
 
-  constructor(private http: HttpClient) { }
+  public token = "";
+  public expiration = new Date();
+
+  constructor(private http: HttpClient) {
+    this.GetToken().subscribe(t => {
+      this.token = t;
+    });
+    this.GetExpiration().subscribe(exp => {
+      this.expiration = new Date(exp);
+    });
+  }
 
   // this is where you'll create methods to do function calls to the controller
 
@@ -25,8 +35,15 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error getting high score data', err)));
   }
 
-  public token = "";
-  public expiration = new Date();
+  GetToken(): Observable<string> {
+    return this.http.get<string>('Hangman/GetToken')
+      .pipe(catchError(err => this.handleError('Error getting token', err)));
+  }
+
+  GetExpiration(): Observable<string> {
+    return this.http.get<string>('Hangman/GetExpiration')
+      .pipe(catchError(err => this.handleError('Error getting expiration', err)));
+  }
 
   get LoginRequired(): boolean {
     return this.token.length === 0 || this.expiration < new Date();

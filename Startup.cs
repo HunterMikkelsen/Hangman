@@ -23,15 +23,20 @@ namespace hangman
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
+            services.AddSession(options => 
+            { 
+                options.IdleTimeout = System.TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
             
             services.AddDbContext<HangmanContext>();
 
             services.AddScoped<HangmanBll>();
 
-            services.AddControllersWithViews();
-
-           // services.AddSession(options => { options.IdleTimeout = System.TimeSpan.FromMinutes(30); });
-            
+            services.AddControllersWithViews()
+                .AddSessionStateTempDataProvider();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -54,6 +59,8 @@ namespace hangman
                 app.UseHsts();
             }
 
+            app.UseSession();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
@@ -62,6 +69,7 @@ namespace hangman
             }
 
             app.UseRouting();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -83,7 +91,6 @@ namespace hangman
                 }
             });
 
-            //app.UseSession();
         }
     }
 }

@@ -26,8 +26,12 @@ export class LoginComponent implements OnInit {
         this.invalidLogin = true;
       } else {
         this.invalidLogin = false;
-        this.http.token = this.login.Username;
-        this.http.expiration = new Date(new Date().getDate() + 7);
+        this.http.GetToken().subscribe(token => {
+          this.http.token = token;
+        })
+        this.http.GetExpiration().subscribe(expiration => {
+          this.http.expiration = new Date(expiration);
+        })
         this.router.navigateByUrl("hangman-game")
         this.validLogin = true;
       }

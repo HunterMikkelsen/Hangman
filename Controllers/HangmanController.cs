@@ -55,6 +55,11 @@ namespace hangman.Controllers
 		public JsonResult LoginUser([FromBody] Login login)
         {
 			bool userValid = _bll.VerifyUser(login);
+            if(userValid)
+            {
+                _bll.SetToken(login.Username);
+                _bll.SetExpiration((System.DateTime.Today.AddDays(7)).ToString());
+            }
 
 			return new JsonResult(userValid);
         }
@@ -69,43 +74,42 @@ namespace hangman.Controllers
         }
 
 
-		//[HttpGet]
-		//public JsonResult GetToken()
-  //      {
-		//	var token = _bll.GetToken();
+        [HttpGet]
+        public JsonResult GetToken()
+        {
+            var token = _bll.GetToken();
 
-		//	return new JsonResult(token);
-  //      }
-
-  //      //post token
-  //      [HttpPost]
-  //      public JsonResult SetToken([FromBody] string username)
-  //      {
-
-  //          _bll.SetToken(username);
-
-  //          return new JsonResult(true);
-  //      }
-
-		////get word
-		//[HttpGet]
-		//public JsonResult GetWord()
-  //      {
-		//	var word = _bll.GetWord();
-
-		//	return new JsonResult(word);
-  //      }
-
-		////post word
-		//[HttpPost]
-		//public JsonResult SetWord([FromBody] string word)
-		//{
-
-		//	_bll.SetWord(word);
-
-		//	return new JsonResult(true);
-		//}
+            return new JsonResult(token);
+        }
 
 
-	}
+        [HttpGet]
+        public JsonResult GetExpiration()
+        {
+            var expiration = _bll.GetExpiration();
+
+            return new JsonResult(expiration);
+        }
+
+
+        [HttpGet]
+        public JsonResult GetWord()
+        {
+            var word = _bll.GetWord();
+
+            return new JsonResult(word);
+        }
+
+
+        [HttpPost]
+        public JsonResult SetWord([FromBody] string word)
+        {
+
+            _bll.SetWord(word);
+
+            return new JsonResult(true);
+        }
+
+
+    }
 }

@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\angular-models\" />
     <Folder Include="ClientApp\src\assets\images\" />
     <Folder Include="ClientApp\src\app\Services\" />
     <Folder Include="Data\Migrations\" />
