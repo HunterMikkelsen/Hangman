@@ -1,7 +1,41 @@
 
 <div class="text-center">
-  <img class="rounded mx-auto d-block" src="/assets/images/hangman1.png" alt="beans" width="100" height="100" />
-  <span class="h1" *ngFor="let num of wordLengthArray">_ </span>
-  <input class="d-block" type="text" />
+  <img class="rounded mx-auto d-block" src="{{pictureUrl}}" alt="beans" width="100" height="100" />
+  <span class="h1" *ngFor="let letter of wordLengthArrayToFill">{{letter}}</span>
+</div>
+
+<!--buttons-->
+<div class="text-center" *ngIf="incorrectlyGuessedLetters.length < 6 && wordLengthArrayToFill.includes('_ ')">
+  <span class="ml-1" *ngFor="let letter of letters">
+    <button *ngIf="!correctlyGuessedLetters.includes(letter) && !incorrectlyGuessedLetters.includes(letter)"
+            class="btn btn-primary btn-sm" (click)="validateLetter(letter)">
+      {{letter}}
+    </button>
+    <button *ngIf="correctlyGuessedLetters.includes(letter)"
+            class="btn btn-success btn-sm" (click)="validateLetter(letter)">
+      {{letter}}
+    </button>
+    <button *ngIf="incorrectlyGuessedLetters.includes(letter)"
+            class="btn btn-danger btn-sm" (click)="validateLetter(letter)">
+      {{letter}}
+    </button>
+  </span>
+</div>
+
+<div class="text-center" *ngIf="incorrectlyGuessedLetters.length >= 6 || !wordLengthArrayToFill.includes('_ ')">
+  <span class="ml-1" *ngFor="let letter of letters">
+    <button *ngIf="!correctlyGuessedLetters.includes(letter) && !incorrectlyGuessedLetters.includes(letter)"
+            class="btn btn-primary btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
+      {{letter}}
+    </button>
+    <button *ngIf="correctlyGuessedLetters.includes(letter)"
+            class="btn btn-success btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
+      {{letter}}
+    </button>
+    <button *ngIf="incorrectlyGuessedLetters.includes(letter)"
+            class="btn btn-danger btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
+      {{letter}}
+    </button>
+  </span>
 </div>
 
