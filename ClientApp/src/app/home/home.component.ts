@@ -57,4 +57,5 @@ export class HomeComponent {
   incrementPicture() {
     this.pictureUrl = "/assets/images/hangman" + (this.incorrectlyGuessedLetters.length + 1).toString() + ".png";
   }
+
 }

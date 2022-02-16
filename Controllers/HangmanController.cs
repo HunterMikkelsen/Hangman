@@ -111,5 +111,14 @@ namespace hangman.Controllers
         }
 
 
+		[HttpPost]
+		public JsonResult GenerateWord()
+        {
+			_bll.GenerateWord();
+
+			return new JsonResult(true);
+        }
+
+
     }
 }
