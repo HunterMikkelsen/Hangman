@@ -17,169 +17,280 @@ namespace hangman.Blls
 {
 	public class HangmanBll
 	{
-        // private/static variables
-        private readonly HangmanContext _ctx;
-        private readonly HttpContext _http;
-        private static Random random;
+		// private/static variables
+		private readonly HangmanContext _ctx;
+		private readonly HttpContext _http;
+		private static Random random;
 
 
-        // Bll Constructor
+		// Bll Constructor
 		public HangmanBll(HangmanContext ctx, IHttpContextAccessor http)
-        //public HangmanBll(HangmanContext ctx)
-        {
-            _ctx = ctx;
-            _http = http.HttpContext;
-            random = new Random();
-        }
+		//public HangmanBll(HangmanContext ctx)
+		{
+			_ctx = ctx;
+			_http = http.HttpContext;
+			random = new Random();
+		}
 
 
-        // GetHighScores returns list of all high scores, ordered by score
-        public IEnumerable<HighScore> GetHighScores()
-        {
-            return _ctx.HighScores
+		// GetHighScores returns list of all high scores, ordered by score
+		public IEnumerable<HighScore> GetHighScores()
+		{
+			return _ctx.HighScores
 				.Select(h => h)
 				.Include(h => h.User)
-                .OrderBy(score => score.Score)
-                .ToList();
-        }
+				.OrderBy(score => score.Score)
+				.ToList();
+		}
 
 
-        // Add a score to the database
-        public void AddHighScore(int user_id, int score)
-        {
-            // get user from id
-            var user = _ctx.Users
-                .Where(user => user.Id == user_id)
-                .ToList();
+		// Add a score to the database
+		public void AddHighScore(int user_id, int score)
+		{
+			// get user from id
+			var user = _ctx.Users
+				.Where(user => user.Id == user_id)
+				.ToList();
 
-            // add highscore with user and score
-            var high_score = new HighScore { User = user[0], Score = score };
-            _ctx.HighScores.Add(high_score);
-            _ctx.SaveChanges();
-        }
+			// add highscore with user and score
+			var high_score = new HighScore { User = user[0], Score = score };
+			_ctx.HighScores.Add(high_score);
+			_ctx.SaveChanges();
+		}
 
 
-        // Add new user to database
-        public bool AddUser(Login login)
-        {
-            // salt and hash password, add to database
-            try
-            {
+		// Add new user to database
+		public bool AddUser(Login login)
+		{
+			// salt and hash password, add to database
+			try
+			{
 				if (_ctx.Users.Select(u => u.Username).Contains(login.Username))
 				{
 					// username already exists!
 					return false;
 				}
 
-                var salt = GenerateSalt();
-                var password = GenerateHash(login.Password + salt);
-                var user = new User { Username = login.Username, Password = password, Salt = salt };
-                _ctx.Users.Add(user);
-                return _ctx.SaveChanges() > 0;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error Adding user: {ex}");
-                return false;
-            }
+				var salt = GenerateSalt();
+				var password = GenerateHash(login.Password + salt);
+				var user = new User { Username = login.Username, Password = password, Salt = salt };
+				_ctx.Users.Add(user);
+				return _ctx.SaveChanges() > 0;
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error Adding user: {ex}");
+				return false;
+			}
 
-        }
-
-
-        // verify given username and password with database
-        public bool VerifyUser(Login login)
-        {
-            try
-            {
-                var user = _ctx.Users
-                    .Where(user => user.Username == login.Username)
-                    .FirstOrDefault();
-                var password = GenerateHash(login.Password + user.Salt);
-
-                return (password == user.Password);
-            }
-            catch
-            {
-                return false;
-            }
-        }
+		}
 
 
-        // Generate random salt
-        public string GenerateSalt()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            return new string(Enumerable.Repeat(chars, 5)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+		// verify given username and password with database
+		public bool VerifyUser(Login login)
+		{
+			try
+			{
+				var user = _ctx.Users
+					.Where(user => user.Username == login.Username)
+					.FirstOrDefault();
+				var password = GenerateHash(login.Password + user.Salt);
+
+				return (password == user.Password);
+			}
+			catch
+			{
+				return false;
+			}
+		}
 
 
-        // Generate sha256 hash for given string
-        public string GenerateHash(string str)
-        {
-            var sb = new StringBuilder();
-
-            using (SHA256 hash = SHA256Managed.Create())
-            {
-                Encoding enc = Encoding.UTF8;
-                Byte[] result = hash.ComputeHash(enc.GetBytes(str));
-
-                foreach (Byte b in result)
-                    sb.Append(b.ToString("x2"));
-            }
-
-            return sb.ToString();
-        }
+		// Generate random salt
+		public string GenerateSalt()
+		{
+			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+			return new string(Enumerable.Repeat(chars, 5)
+				.Select(s => s[random.Next(s.Length)]).ToArray());
+		}
 
 
-        //get token
-        public string GetToken()
-        {
-            return _http.Session.GetString("Token");
-        }
+		// Generate sha256 hash for given string
+		public string GenerateHash(string str)
+		{
+			var sb = new StringBuilder();
 
-        //set token
-        public void SetToken(string username)
-        {
-            _http.Session.SetString("Token", username);
-        }
+			using (SHA256 hash = SHA256Managed.Create())
+			{
+				Encoding enc = Encoding.UTF8;
+				Byte[] result = hash.ComputeHash(enc.GetBytes(str));
 
-        //get expiration
-        public string GetExpiration()
-        {
-            return _http.Session.GetString("Expiration");
-        }
+				foreach (Byte b in result)
+					sb.Append(b.ToString("x2"));
+			}
 
-        //set expiration
-        public void SetExpiration(string expiration)
-        {
-            _http.Session.SetString("Expiration", expiration);
-        }
+			return sb.ToString();
+		}
 
-        //get word
-        public string GetWord()
-        {
-            return _http.Session.GetString("Word");
-        }
 
-        //set word
-        public void SetWord(string word)
-        {
-            _http.Session.SetString("Word", word);
+		//get token
+		public string GetToken()
+		{
+			return _http.Session.GetString("Token");
+		}
 
-        }
+		//set token
+		public void SetToken(string username)
+		{
+			_http.Session.SetString("Token", username);
+		}
 
-        //Generate new word
-        public string GenerateWord()
-        {
-            Random rand = new Random();
-            using (var sr = new StreamReader("/assets/words.txt"))
-            {
-                for (int i = 1; i < rand.Next(214); i++)
-                    sr.ReadLine();
-                return sr.ReadLine();
-            }
-        }
+		//get expiration
+		public string GetExpiration()
+		{
+			return _http.Session.GetString("Expiration");
+		}
 
-    }
+		//set expiration
+		public void SetExpiration(string expiration)
+		{
+			_http.Session.SetString("Expiration", expiration);
+		}
+
+		//get word
+		public string GetWord()
+		{
+			return _http.Session.GetString("Word");
+		}
+
+		//set word
+		public void SetWord(string word)
+		{
+			_http.Session.SetString("Word", word);
+		}
+
+		//Generate new word
+		public void GenerateWord()
+		{
+			Random rand = new Random();
+			List<string> words = new List<string>();
+			using (var sr = new StreamReader("./Data/words.txt"))
+			{
+				var endOfFile = false;
+				while (!endOfFile)
+				{
+					var word = sr.ReadLine();
+					
+					if (word != null && !words.Contains(word))
+					{
+						words.Add(sr.ReadLine());
+					}
+					else if(word == null)
+					{
+						endOfFile = true;
+					}
+				}
+			}
+
+			var randomIndex = rand.Next(0, words.Count()-1);
+
+			SetWord(words[randomIndex]);
+		}
+
+		public string InitializeWordLengthString()
+		{
+			var word = GetWord();
+
+			string wordLengthString = "";
+
+			foreach(var letter in word)
+			{
+				wordLengthString += "_";
+			}
+
+			_http.Session.SetString("WordLengthString", wordLengthString);
+			_http.Session.SetString("CorrectlyGuessedLetters", "");
+			_http.Session.SetString("IncorrectlyGuessedLetters", "");
+
+			return wordLengthString;
+		}
+
+		public string GetWordLengthString()
+		{
+			return _http.Session.GetString("WordLengthString");
+		}
+
+		public void SetWordLengthString(char guessedLetter)
+		{
+			var word = GetWord();
+			var wordLengthString = GetWordLengthString().ToCharArray();
+
+			int pos = 0;
+			foreach(var letter in word)
+			{
+				if(letter == guessedLetter)
+				{
+					wordLengthString[pos] = letter;
+				}
+
+				pos++;
+			}
+
+			_http.Session.SetString("WordLengthString", new string(wordLengthString));
+		}
+
+		public void CheckUserGuess(char userGuess)
+		{
+			var word = GetWord();
+
+			if (word.Contains(userGuess))
+			{
+				SetWordLengthString(userGuess);
+				SetCorrectlyGuessedLetter(userGuess);
+			}
+			else
+			{
+				SetIncorrectlyGuessedLetter(userGuess);
+			}
+		}
+
+		public void SetCorrectlyGuessedLetter(char correctlyGuessedLetter)
+		{
+			var correctLetters = GetCorrectlyGuessedLetters();
+			correctLetters += correctlyGuessedLetter;
+
+			_http.Session.SetString("CorrectlyGuessedLetters", correctLetters);
+		}
+
+		public void SetIncorrectlyGuessedLetter(char incorrectlyGuessedLetter)
+		{
+			var incorrectLetters = GetIncorrectlyGuessedLetters();
+			incorrectLetters += incorrectlyGuessedLetter;
+
+			_http.Session.SetString("IncorrectlyGuessedLetters", incorrectLetters);
+		}
+
+		public string GetCorrectlyGuessedLetters()
+		{
+			var correctLetters = _http.Session.GetString("CorrectlyGuessedLetters");
+			if (correctLetters == null)
+			{
+				_http.Session.SetString("CorrectlyGuessedLetters", "");
+				return "";
+			}
+
+			return correctLetters;
+		}
+
+		public string GetIncorrectlyGuessedLetters()
+		{
+			var incorrectLetters = _http.Session.GetString("IncorrectlyGuessedLetters");
+			if(incorrectLetters == null)
+			{
+				_http.Session.SetString("IncorrectlyGuessedLetters", "");
+				return "";
+			}
+
+			return incorrectLetters;
+		}
+	}
 }

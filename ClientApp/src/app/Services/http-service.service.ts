@@ -1,9 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import {  Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Login } from '../angular-models/login.model';
 import { HighScore } from '../angular-models/highscore.model';
+import { GuessedLetter } from '../angular-models/guessedLetter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,38 @@ export class HttpServiceService {
   }
 
   // this is where you'll create methods to do function calls to the controller
+  GenerateWord(): Observable<boolean> {
+    return this.http.get<boolean>('Hangman/GenerateWord')
+      .pipe(catchError(err => this.handleError('Error generating random word', err)));
+  }
+
+  GetWordLengthString(): Observable<string> {
+    return this.http.get<string>('Hangman/GetWordLengthString')
+      .pipe(catchError(err => this.handleError('Error getting word length string', err)));
+  }
+
+  ValidateUserGuess(letter: string): Observable<boolean> {
+    let guessedLetter = new GuessedLetter();
+    guessedLetter.letter = letter;
+
+    return this.http.post<boolean>('Hangman/ValidateUserGuess', guessedLetter)
+      .pipe(catchError(err => this.handleError('Error validating user guess', err)));
+  }
+
+  InitializeWordLengthString(): Observable<string> {
+    return this.http.get<string>('Hangman/InitializeWordLengthString')
+      .pipe(catchError(err => this.handleError('Error initializing word length string', err)));
+  }
+
+  GetCorrectlyGuessedLetters(): Observable<string> {
+    return this.http.get<string>('Hangman/GetCorrectlyGuessedLetters')
+      .pipe(catchError(err => this.handleError('Error getting correctly guessed letters', err)));
+  }
+
+  GetIncorrectlyGuessedLetters(): Observable<string> {
+    return this.http.get<string>('Hangman/GetIncorrectlyGuessedLetters')
+      .pipe(catchError(err => this.handleError('Error getting incorrectly guessed letters', err)));
+  }
 
   SignUpForAccount(login: Login): Observable<boolean> {
     //Hangman/SignUpForAccount Hangman = hangmancontroller Signupforaccount = signupforaccountt function in hangman controller

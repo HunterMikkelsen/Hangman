@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Login } from '../angular-models/login.model';
+import {} from '@angular/common/http'
 import { HttpServiceService } from '../Services/http-service.service';
 
 @Component({
@@ -9,49 +10,52 @@ import { HttpServiceService } from '../Services/http-service.service';
 export class HomeComponent {
   word: string;
   wordLengthArray: string[];
-  wordLengthArrayToFill: string[] = [];
   letters: string[] = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
   correctlyGuessedLetters: string[] = [];
   incorrectlyGuessedLetters: string[] = [];
   pictureUrl: string = "/assets/images/hangman1.png";
+  gameInSession: boolean = false;
 
-  constructor() {
-    // make this randomly generated from a text file, at some point
-    this.word = "california";
-
-    this.wordLengthArray = this.word.split("");
-
-    this.wordLengthArray.forEach(letter => {
-      this.wordLengthArrayToFill.push("_ ");
-    });
-  }
-
-  validateLetter(letter: string) {
-    if (this.word.includes(letter)) {
-      if (!this.correctlyGuessedLetters.includes(letter)) {
-        this.correctlyGuessedLetters.push(letter);
-      }
-
-      let startPos = 0;
-      this.wordLengthArray.forEach(newLetter => {
-        let positionOfLetterInWord = this.word.indexOf(letter, startPos);
-
-        if (positionOfLetterInWord !== null) {
-          this.wordLengthArrayToFill[positionOfLetterInWord] = letter + " ";
-
-          startPos = positionOfLetterInWord + 1;
-        }
+  constructor(private httpService: HttpServiceService) {
+    if (this.gameInSession !== true) {
+      httpService.GenerateWord().subscribe(() => {
+        httpService.InitializeWordLengthString().subscribe(wordString => {
+          this.wordLengthArray = wordString.split("");
+        });
       });
     }
     else {
-      if (!this.incorrectlyGuessedLetters.includes(letter)) {
-        this.incorrectlyGuessedLetters.push(letter);
-      }
+      this.fetchData("1");
+    }
+  }
 
-      if (this.incorrectlyGuessedLetters.length < 7) {
-        this.incrementPicture(); this.incrementPicture();
+  validateLetter(letter: string) {
+    this.httpService.ValidateUserGuess(letter).subscribe(() => {
+      this.fetchData(letter);
+    });
+  }
+
+  fetchData(letter: string) {
+    this.httpService.GetCorrectlyGuessedLetters().subscribe(correctLetters => {
+      this.correctlyGuessedLetters = correctLetters.split("");
+    });
+    this.httpService.GetIncorrectlyGuessedLetters().subscribe(incorrectLetters => {
+      this.incorrectlyGuessedLetters = incorrectLetters.split("");
+      if (this.incorrectlyGuessedLetters.includes(letter)) {
+        this.incrementPicture();
       }
-    }    
+    });
+    this.httpService.GetWordLengthString().subscribe(wordString => {
+      this.wordLengthArray = wordString.split("");
+    });
+  }
+
+  startGame() {
+    this.gameInSession = true;
+  }
+
+  resetGame() {
+    this.gameInSession = false;
   }
 
   incrementPicture() {

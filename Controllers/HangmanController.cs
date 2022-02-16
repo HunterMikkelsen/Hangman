@@ -10,9 +10,9 @@ namespace hangman.Controllers
 		private readonly HangmanBll _bll;
 
 		public HangmanController(HangmanBll bll)
-        {
+		{
 			_bll = bll;
-        }
+		}
 
 		public IActionResult Index()
 		{
@@ -37,7 +37,7 @@ namespace hangman.Controllers
 			// here's an example of user validation. REMEMBER: the controller is not used for logic, it's like a bridge
 			//    between your View and your Model: VIEW -> CONTROLLER -> MODEL
 			// this is why we call the bll, and then the function from the bll and pass in any necessary params
-			var result = "call your function from the HangmanBllHere, for example:" + 
+			var result = "call your function from the HangmanBllHere, for example:" +
 						 "HangmanBll.ValidateUserLogin(username, password)";
 
 			return new JsonResult(result);
@@ -49,76 +49,92 @@ namespace hangman.Controllers
 			bool userAdded = _bll.AddUser(login);
 
 			return new JsonResult(userAdded);
-		} 
+		}
 
 		[HttpPost]
 		public JsonResult LoginUser([FromBody] Login login)
-        {
+		{
 			bool userValid = _bll.VerifyUser(login);
-            if(userValid)
-            {
-                _bll.SetToken(login.Username);
-                _bll.SetExpiration((System.DateTime.Today.AddDays(7)).ToString());
-            }
+			if (userValid)
+			{
+				_bll.SetToken(login.Username);
+				_bll.SetExpiration((System.DateTime.Today.AddDays(7)).ToString());
+			}
 
 			return new JsonResult(userValid);
-        }
-
+		}
 
 		[HttpGet]
 		public JsonResult GetHighScores()
-        {
+		{
 			var thing = _bll.GetHighScores();
 
 			return new JsonResult(thing);
-        }
+		}
 
+		[HttpGet]
+		public JsonResult GetToken()
+		{
+			var token = _bll.GetToken();
 
-        [HttpGet]
-        public JsonResult GetToken()
-        {
-            var token = _bll.GetToken();
+			return new JsonResult(token);
+		}
 
-            return new JsonResult(token);
-        }
+		[HttpGet]
+		public JsonResult GetExpiration()
+		{
+			var expiration = _bll.GetExpiration();
 
+			return new JsonResult(expiration);
+		}
 
-        [HttpGet]
-        public JsonResult GetExpiration()
-        {
-            var expiration = _bll.GetExpiration();
-
-            return new JsonResult(expiration);
-        }
-
-
-        [HttpGet]
-        public JsonResult GetWord()
-        {
-            var word = _bll.GetWord();
-
-            return new JsonResult(word);
-        }
-
-
-        [HttpPost]
-        public JsonResult SetWord([FromBody] string word)
-        {
-
-            _bll.SetWord(word);
-
-            return new JsonResult(true);
-        }
-
-
-		[HttpPost]
+		[HttpGet]
 		public JsonResult GenerateWord()
-        {
+		{
 			_bll.GenerateWord();
 
 			return new JsonResult(true);
-        }
+		}
 
+		[HttpGet]
+		public JsonResult GetWordLengthString()
+		{
+			var wordLengthString = _bll.GetWordLengthString();
 
-    }
+			return new JsonResult(wordLengthString);
+		}
+
+		[HttpPost]
+		public JsonResult ValidateUserGuess([FromBody] GuessedLetter guessedLetter)
+		{
+			var letter = guessedLetter.Letter;
+			_bll.CheckUserGuess(letter[0]);
+
+			return new JsonResult(true);
+		}
+
+		[HttpGet]
+		public JsonResult InitializeWordLengthString()
+		{
+			var wordLengthString = _bll.InitializeWordLengthString();
+
+			return new JsonResult(wordLengthString);
+		}
+
+		[HttpGet]
+		public JsonResult GetCorrectlyGuessedLetters()
+		{
+			var correctlyGuessedLetters = _bll.GetCorrectlyGuessedLetters();
+
+			return new JsonResult(correctlyGuessedLetters);
+		}
+
+		[HttpGet]
+		public JsonResult GetIncorrectlyGuessedLetters()
+		{
+			var incorrectlyGuessedLetters = _bll.GetIncorrectlyGuessedLetters();
+
+			return new JsonResult(incorrectlyGuessedLetters);
+		}
+	}
 }

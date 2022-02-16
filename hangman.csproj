@@ -24,19 +24,38 @@
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\src\app\hangman\**" />
+    <Compile Remove="ClientApp\src\assets\Words\**" />
     <Content Remove="$(SpaRoot)**" />
     <Content Remove="ClientApp\src\app\hangman\**" />
+    <Content Remove="ClientApp\src\assets\Words\**" />
     <EmbeddedResource Remove="ClientApp\src\app\hangman\**" />
+    <EmbeddedResource Remove="ClientApp\src\assets\Words\**" />
     <None Remove="$(SpaRoot)**" />
     <None Remove="ClientApp\src\app\hangman\**" />
+    <None Remove="ClientApp\src\assets\Words\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ClientApp\src\app\angular-models\GuessedLetter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\angular-models\guessedLetter.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ClientApp\src\assets\images\" />
     <Folder Include="ClientApp\src\app\Services\" />
-    <Folder Include="ClientApp\src\assets\Words\" />
     <Folder Include="Data\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="GuessedLetter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\angular-models\guessedLetter.model.ts" />
   </ItemGroup>
 
   <ItemGroup>
