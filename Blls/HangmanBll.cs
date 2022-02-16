@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -189,6 +190,18 @@ namespace hangman.Blls
         {
             _http.Session.SetString("Word", word);
 
+        }
+
+        //Generate new word
+        public string GenerateWord()
+        {
+            Random rand = new Random();
+            using (var sr = new StreamReader("/assets/words.txt"))
+            {
+                for (int i = 1; i < rand.Next(214); i++)
+                    sr.ReadLine();
+                return sr.ReadLine();
+            }
         }
 
     }
