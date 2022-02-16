@@ -35,7 +35,7 @@ import { AuthServiceService } from './Services/auth-service.service';
       { path: '**', redirectTo: "/" }
     ])
   ],
-  providers: [ AuthServiceService ],
+  providers: [AuthServiceService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -95,7 +95,14 @@ namespace hangman.Blls
                     .FirstOrDefault();
                 var password = GenerateHash(login.Password + user.Salt);
 
-                return (password == user.Password);
+                if (password == user.Password)
+                {
+                    SetToken(login.Username);
+                    SetExpiration(DateTime.Today.AddDays(7).ToString());
+                    return true;
+                }
+
+                return false;
             }
             catch
             {
@@ -128,6 +135,22 @@ namespace hangman.Blls
             }
 
             return sb.ToString();
+        }
+
+
+        public SessionData GetSessionData()
+        {
+            var token = GetToken();
+            var expiration = GetExpiration();
+
+            if (token == null)
+            {
+                token = "";
+                expiration = new DateTime().ToString();
+            }
+            var sessionData = new SessionData(token, expiration);
+
+            return sessionData;
         }
 
 

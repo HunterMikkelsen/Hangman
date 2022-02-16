@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import {  Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Login } from '../angular-models/login.model';
 import { HighScore } from '../angular-models/highscore.model';
+import { SessionData } from '../angular-models/sessiondata.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class HttpServiceService {
   public token = "";
   public expiration = new Date();
 
+
+
   constructor(private http: HttpClient) {
-    this.GetToken().subscribe(t => {
-      this.token = t;
-    });
-    this.GetExpiration().subscribe(exp => {
-      this.expiration = new Date(exp);
+    this.GetSessionData().subscribe(data => {
+      this.token = data.token;
+      this.expiration = new Date(data.expiration);
     });
   }
 
@@ -30,6 +31,11 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error signing up for account', err)));
   }
 
+  GetSessionData(): Observable<SessionData> {
+    return this.http.get<SessionData>('Hangman/GetSessionData')
+      .pipe(catchError(err => this.handleError('Error getting session data', err)));
+  }
+  
   GetHighScores(): Observable<HighScore[]> {
     return this.http.get<HighScore[]>('Hangman/GetHighScores')
       .pipe(catchError(err => this.handleError('Error getting high score data', err)));
