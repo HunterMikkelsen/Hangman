@@ -26,14 +26,20 @@ export class LoginComponent implements OnInit {
         this.invalidLogin = true;
       } else {
         this.invalidLogin = false;
-        this.http.GetToken().subscribe(token => {
-          this.http.token = token;
+        this.http.GetSessionData().subscribe(data => {
+          this.http.token = data.token;
+          this.http.expiration = new Date(data.expiration);
+          this.router.navigateByUrl("hangman-game");
+          this.validLogin = true;
         })
-        this.http.GetExpiration().subscribe(expiration => {
-          this.http.expiration = new Date(expiration);
-        })
-        this.router.navigateByUrl("hangman-game")
-        this.validLogin = true;
+        //this.http.GetToken().subscribe(token => {
+        //  this.http.token = token;
+        //})
+        //this.http.GetExpiration().subscribe(expiration => {
+        //  this.http.expiration = new Date(expiration);
+        //})
+        //this.router.navigateByUrl("hangman-game")
+        //this.validLogin = true;
       }
     });
   }

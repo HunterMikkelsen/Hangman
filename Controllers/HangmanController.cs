@@ -55,21 +55,24 @@ namespace hangman.Controllers
 		public JsonResult LoginUser([FromBody] Login login)
 		{
 			bool userValid = _bll.VerifyUser(login);
-			if (userValid)
-			{
-				_bll.SetToken(login.Username);
-				_bll.SetExpiration((System.DateTime.Today.AddDays(7)).ToString());
-			}
 
 			return new JsonResult(userValid);
 		}
 
 		[HttpGet]
 		public JsonResult GetHighScores()
-		{
-			var thing = _bll.GetHighScores();
+        {
+			var highScores = _bll.GetHighScores();
 
-			return new JsonResult(thing);
+			return new JsonResult(highScores);
+        }
+
+		[HttpGet]
+		public JsonResult GetSessionData()
+		{
+			var sessionData = _bll.GetSessionData();
+
+			return new JsonResult(sessionData);
 		}
 
 		[HttpGet]

@@ -96,13 +96,20 @@ namespace hangman.Blls
 					.FirstOrDefault();
 				var password = GenerateHash(login.Password + user.Salt);
 
-				return (password == user.Password);
-			}
-			catch
-			{
-				return false;
-			}
-		}
+                if (password == user.Password)
+                {
+                    SetToken(login.Username);
+                    SetExpiration(DateTime.Today.AddDays(7).ToString());
+                    return true;
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
 
 		// Generate random salt
@@ -132,11 +139,27 @@ namespace hangman.Blls
 		}
 
 
-		//get token
-		public string GetToken()
-		{
-			return _http.Session.GetString("Token");
-		}
+        public SessionData GetSessionData()
+        {
+            var token = GetToken();
+            var expiration = GetExpiration();
+
+            if (token == null)
+            {
+                token = "";
+                expiration = new DateTime().ToString();
+            }
+            var sessionData = new SessionData(token, expiration);
+
+            return sessionData;
+        }
+
+
+        //get token
+        public string GetToken()
+        {
+            return _http.Session.GetString("Token");
+        }
 
 		//set token
 		public void SetToken(string username)
