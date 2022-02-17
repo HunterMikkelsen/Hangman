@@ -136,5 +136,13 @@ namespace hangman.Controllers
 
 			return new JsonResult(incorrectlyGuessedLetters);
 		}
+
+		[HttpGet]
+		public JsonResult GetWord()
+		{
+			var correctWord = _bll.GetWord();
+
+			return new JsonResult(correctWord);
+		}
 	}
 }

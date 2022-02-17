@@ -241,15 +241,19 @@ namespace hangman.Blls
 		public void CheckUserGuess(char userGuess)
 		{
 			var word = GetWord();
-
-			if (word.Contains(userGuess))
+			var correctGuesses = GetCorrectlyGuessedLetters();
+			var incorrectGuesses = GetIncorrectlyGuessedLetters();
+			if (!correctGuesses.Contains(userGuess) && !incorrectGuesses.Contains(userGuess))
 			{
-				SetWordLengthString(userGuess);
-				SetCorrectlyGuessedLetter(userGuess);
-			}
-			else
-			{
-				SetIncorrectlyGuessedLetter(userGuess);
+				if (word.Contains(userGuess))
+				{
+					SetWordLengthString(userGuess);
+					SetCorrectlyGuessedLetter(userGuess);
+				}
+				else
+				{
+					SetIncorrectlyGuessedLetter(userGuess);
+				}
 			}
 		}
 

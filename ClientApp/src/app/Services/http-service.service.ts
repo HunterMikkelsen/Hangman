@@ -57,6 +57,11 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error getting incorrectly guessed letters', err)));
   }
 
+  GetCorrectWord(): Observable<string> {
+    return this.http.get<string>('Hangman/GetWord')
+      .pipe(catchError(err => this.handleError('Error getting the correct word', err)));
+  }
+
   SignUpForAccount(login: Login): Observable<boolean> {
     //Hangman/SignUpForAccount Hangman = hangmancontroller Signupforaccount = signupforaccountt function in hangman controller
     return this.http.post<boolean>('Hangman/SignUpForAccount', login)
@@ -66,6 +71,11 @@ export class HttpServiceService {
   GetHighScores(): Observable<HighScore[]> {
     return this.http.get<HighScore[]>('Hangman/GetHighScores')
       .pipe(catchError(err => this.handleError('Error getting high score data', err)));
+  }
+
+  SubmitScore(score: HighScore) {
+    this.http.post('Hangman/SubmitScore', score)
+      .pipe(catchError(err => this.handleError('Error sending high score data', err)));
   }
 
   GetToken(): Observable<string> {
