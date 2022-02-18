@@ -34,13 +34,27 @@ namespace hangman.Blls
 
 
 		// GetHighScores returns list of all high scores, ordered by score
-		public IEnumerable<HighScore> GetHighScores()
+		public IEnumerable<HighScoreDto> GetHighScores()
 		{
-			return _ctx.HighScores
+			var highScores = _ctx.HighScores
 				.Select(h => h)
 				.Include(h => h.User)
 				.OrderBy(score => score.Score)
 				.ToList();
+
+			var highScoreDtos = new List<HighScoreDto>();
+
+			highScores.ForEach(highScore =>
+			{
+				var hs = new HighScoreDto();
+				hs.Id = highScore.Id;
+				hs.Score = highScore.Score;
+				hs.DateTime = highScore.DateTime;
+				hs.Username = highScore.User.Username;
+				highScoreDtos.Add(hs);
+			});
+
+			return highScoreDtos;
 		}
 
 
