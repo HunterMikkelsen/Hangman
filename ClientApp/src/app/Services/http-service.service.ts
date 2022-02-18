@@ -77,11 +77,6 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error getting high score data', err)));
   }
 
-  SubmitScore(score: HighScore) {
-    this.http.post('Hangman/SubmitScore', score)
-      .pipe(catchError(err => this.handleError('Error sending high score data', err)));
-  }
-
   GetToken(): Observable<string> {
     return this.http.get<string>('Hangman/GetToken')
       .pipe(catchError(err => this.handleError('Error getting token', err)));

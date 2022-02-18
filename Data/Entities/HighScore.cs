@@ -10,6 +10,7 @@ namespace hangman.Data.Entities
         public int Id { get; set; }
         public int Score { get; set; }
         public DateTime DateTime { get; set; }
+        public string Word { get; set; }
         public User User { get; set; }
     }
 }

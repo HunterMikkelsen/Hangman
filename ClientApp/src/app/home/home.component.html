@@ -1,5 +1,5 @@
-<div *ngIf="gameInSession !== true">
-  <button class="btn btn-sm btn-primary" (click)="startGame()">Begin Game</button>
+<div class="text-center" *ngIf="gameInSession !== true">
+  <button class="btn btn-primary" (click)="startGame()">Begin Game</button>
 </div>
 
 <div *ngIf="gameInSession === true">
@@ -35,7 +35,7 @@
           </div>
         <div class="text-center p-3" *ngIf="incorrectlyGuessedLetters.length > 5 || !wordLengthArray.includes('_')">
             <span class="h1" *ngIf="correctWord !== '' && incorrectlyGuessedLetters.length > 5">The correct word was "{{correctWord}}"</span>
-            <span class="h1" *ngIf="!wordLengthArray.includes('_')">Congratulations, you won! Score: {{numGuesses}} guesses</span>
+            <span class="h1" *ngIf="!wordLengthArray.includes('_')">Congratulations, you won! Score: {{incorrectlyGuessedLetters.length}}</span>
           <br />
             <button class="btn btn-primary" (click)="resetGame()">Play again</button>
         </div>

@@ -3,4 +3,5 @@ export class HighScore {
   Score: Number;
   DateTime: Date;
   Username: string;
+  Word: string;
 }
