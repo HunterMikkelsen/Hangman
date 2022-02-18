@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApp\Class.cs" />
     <Compile Remove="ClientApp\src\app\angular-models\GuessedLetter.cs" />
   </ItemGroup>
 

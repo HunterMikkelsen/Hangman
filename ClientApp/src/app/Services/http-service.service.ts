@@ -61,6 +61,16 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error getting the correct word', err)));
   }
 
+  GetGameState(): Observable<boolean> {
+    return this.http.get<boolean>('Hangman/GetGameState')
+      .pipe(catchError(err => this.handleError('Error getting the correct game state', err)));
+  }
+
+  SetGameState(gameState: boolean): Observable<boolean>{
+    return this.http.post<boolean>('Hangman/SetGameState', { params: { gameState: gameState } })
+      .pipe(catchError(err => this.handleError('Error getting the correct game state', err)));
+  }
+
   SignUpForAccount(login: Login): Observable<boolean> {
     //Hangman/SignUpForAccount Hangman = hangmancontroller Signupforaccount = signupforaccountt function in hangman controller
     return this.http.post<boolean>('Hangman/SignUpForAccount', login)

@@ -15,20 +15,24 @@ export class HomeComponent {
   correctlyGuessedLetters: string[] = [];
   incorrectlyGuessedLetters: string[] = [];
   pictureUrl: string = "/assets/images/hangman1.png";
-  gameInSession: boolean = false;
+  gameInSession: boolean;
   correctWord: string = "";
   numGuesses: number = 0;
 
   constructor(private httpService: HttpServiceService) {
-    this.initializeGame(this.gameInSession);
+    httpService.GetGameState().subscribe(gameState => {
+      this.gameInSession = gameState;
+      console.log("current game state", gameState);
+      this.initializeGame(this.gameInSession);
+    });
   }
 
   initializeGame(keepGameState: boolean) {
-    this.correctlyGuessedLetters = [];
-    this.incorrectlyGuessedLetters = [];
-    this.correctWord = "";
-    this.incrementPicture(this.incorrectlyGuessedLetters.length);
     if (keepGameState === false) {
+      this.correctlyGuessedLetters = [];
+      this.incorrectlyGuessedLetters = [];
+      this.correctWord = "";
+      this.incrementPicture(this.incorrectlyGuessedLetters.length);
       this.httpService.GenerateWord().subscribe(() => {
         this.httpService.InitializeWordLengthString().subscribe(wordString => {
           this.wordLengthArray = wordString.split("");
@@ -85,14 +89,16 @@ export class HomeComponent {
   }
 
   startGame() {
+    let value = true;
+    this.httpService.SetGameState(value);
     this.gameInSession = true;
   }
 
   resetGame() {
+    this.httpService.SetGameState(false);
     this.numGuesses = 0;
     this.gameInSession = false;
     this.initializeGame(false);
-    this.gameInSession = true;
   }
 
   incrementPicture(lengthOfIncorrectLetters: number) {
