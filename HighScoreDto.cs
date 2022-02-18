@@ -8,5 +8,6 @@ namespace hangman
         public int Score { get; set; }
         public DateTime DateTime { get; set; }
         public string Username { get; set; }
+        public string Word { get; set; }
     }
 }
