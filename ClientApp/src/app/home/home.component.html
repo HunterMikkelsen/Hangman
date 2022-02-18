@@ -3,51 +3,68 @@
 </div>
 
 <div *ngIf="gameInSession === true">
-  <div class="text-center">
-    <img class="rounded mx-auto d-block" src="{{pictureUrl}}" alt="beans" width="100" height="100" />
-    <span class="h1" *ngFor="let letter of wordLengthArray">{{letter + " "}}</span>
+
+  <div class="container">
+    <div class="row d-flex justify-content-center text-center">
+      <div class="column">
+        <div class="card p-4">
+          <div class="justify-content-center">
+            <img class="rounded mx-auto d-block" src="{{pictureUrl}}" alt="beans"/>
+            <span class="h1" *ngFor="let letter of wordLengthArray">{{letter + " "}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="column col-4">
+        <div class="card">
+          <div class="d-grid gap-3" *ngIf="incorrectlyGuessedLetters.length <= 5 && wordLengthArray.includes('_')">
+            <span class="mx-1 my-2" style="width: 50px; display: inline-block;" *ngFor="let letter of letters">
+              <button *ngIf="!correctlyGuessedLetters.includes(letter) && !incorrectlyGuessedLetters.includes(letter)"
+                      class="btn btn-primary btn-lg" style="width: 50px; display: inline-block;" (click)="validateLetter(letter)">
+                {{letter}}
+              </button>
+              <button *ngIf="correctlyGuessedLetters.includes(letter)"
+                      class="btn btn-success btn-lg" style="width: 50px; display: inline-block;" (click)="validateLetter(letter)">
+                {{letter}}
+              </button>
+              <button *ngIf="incorrectlyGuessedLetters.includes(letter)"
+                      class="btn btn-danger btn-lg" style="width: 50px; display: inline-block;" (click)="validateLetter(letter)">
+                {{letter}}
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+        <div class="text-center" *ngIf="incorrectlyGuessedLetters.length > 5 || !wordLengthArray.includes('_')">
+          <span class="ml-1" *ngFor="let letter of letters">
+            <button *ngIf="!correctlyGuessedLetters.includes(letter) && !incorrectlyGuessedLetters.includes(letter)"
+                    class="btn btn-primary btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
+              {{letter}}
+            </button>
+            <button *ngIf="correctlyGuessedLetters.includes(letter)"
+                    class="btn btn-success btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
+              {{letter}}
+            </button>
+            <button *ngIf="incorrectlyGuessedLetters.includes(letter)"
+                    class="btn btn-danger btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
+              {{letter}}
+            </button>
+          </span>
+
+          <br />
+
+          <button class="btn btn-sm btn-primary" (click)="resetGame()">Play again</button>
+
+          <br />
+
+          <span *ngIf="correctWord !== '' && incorrectlyGuessedLetters.length > 5">The correct word was "{{correctWord}}"</span>
+          <span *ngIf="!wordLengthArray.includes('_')">Congratulations, you won! Score: {{numGuesses}} guesses</span>
+        </div>
+
+
+    </div>
   </div>
 
-  <div class="text-center" *ngIf="incorrectlyGuessedLetters.length <= 5 && wordLengthArray.includes('_')">
-    <span class="ml-1" *ngFor="let letter of letters">
-      <button *ngIf="!correctlyGuessedLetters.includes(letter) && !incorrectlyGuessedLetters.includes(letter)"
-              class="btn btn-primary btn-sm" (click)="validateLetter(letter)">
-        {{letter}}
-      </button>
-      <button *ngIf="correctlyGuessedLetters.includes(letter)"
-              class="btn btn-success btn-sm" (click)="validateLetter(letter)">
-        {{letter}}
-      </button>
-      <button *ngIf="incorrectlyGuessedLetters.includes(letter)"
-              class="btn btn-danger btn-sm" (click)="validateLetter(letter)">
-        {{letter}}
-      </button>
-    </span>
-  </div>
 
-  <div class="text-center" *ngIf="incorrectlyGuessedLetters.length > 5 || !wordLengthArray.includes('_')">
-    <span class="ml-1" *ngFor="let letter of letters">
-      <button *ngIf="!correctlyGuessedLetters.includes(letter) && !incorrectlyGuessedLetters.includes(letter)"
-              class="btn btn-primary btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
-        {{letter}}
-      </button>
-      <button *ngIf="correctlyGuessedLetters.includes(letter)"
-              class="btn btn-success btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
-        {{letter}}
-      </button>
-      <button *ngIf="incorrectlyGuessedLetters.includes(letter)"
-              class="btn btn-danger btn-sm disabled" disabled="true" (click)="validateLetter(letter)">
-        {{letter}}
-      </button>
-    </span>
-
-    <br />
-
-    <button class="btn btn-sm btn-primary" (click)="resetGame()">Play again</button>
-
-    <br />
-
-    <span *ngIf="correctWord !== '' && incorrectlyGuessedLetters.length > 5">The correct word was "{{correctWord}}"</span>
-    <span *ngIf="!wordLengthArray.includes('_')">Congratulations, you won! Score: {{numGuesses}} guesses</span>
-  </div>
 </div>
