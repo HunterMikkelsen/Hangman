@@ -1,5 +1,3 @@
-<h2>Sign up</h2>
-
 <div class="alert alert-danger" *ngIf="passwordsDontMatch === true && hasClickedLogin === true">
   Passwords don't match!
 </div>
@@ -9,18 +7,21 @@
 <div class="alert alert-danger" *ngIf="accountCreated === false">
   Account creation unsuccessful. Please try a different username
 </div>
+<h2 class="card-title">Sign up</h2>
 
-<div class="form-group">
-  <label for="username">Username</label>
-  <input type="text" class="form-control" name="username" [(ngModel)]="login.Username" required />
 
-  <label for="password">Password</label>
-  <input type="password" class="form-control" name="password" [(ngModel)]="login.Password" required />
+<div class="card col-6 justify-content-center">
+  <div class="form-group mx-3 justify-content-start">
+    <div class="container">
+      <div class="row my-2">
+        <input type="text" class="form-control col-xs-2 mx-auto" name="username" placeholder="New Username" autocomplete="off" maxlength="20" [(ngModel)]="login.Username" required />
+      </div>
 
-  <label for="passwordCheck">Confirm Password</label>
-  <input type="password" class="form-control" name="passwordCheck" [(ngModel)]="passwordCheck" required />
-
-  <input type="button" class="btn btn-primary" value="Sign up" (click)="addUser()" />
+      <div class="row my-2 mt-3">
+        <input type="password" class="form-control col-xs-2 mx-auto" name="password" placeholder="Password" autocomplete="off" maxlength="30" [(ngModel)]="login.Password" required />
+        <input type="password" class="form-control col-xs-2 mx-auto mt-1" name="passwordCheck" placeholder="Verify Password" autocomplete="off" maxlength="30" [(ngModel)]="passwordCheck" required />
+      </div>
+    </div>
+    <input type="button" class="btn btn-primary" value="Sign up" (click)="addUser()" />
+  </div>
 </div>
-
-<button class="btn" type="button" (click)="showUsers()"></button>
