@@ -127,6 +127,11 @@ namespace hangman.Blls
             }
         }
 
+		public void Logout()
+        {
+			_http.Session.Clear();
+        }
+
 
 		// Generate random salt
 		public string GenerateSalt()
@@ -168,6 +173,19 @@ namespace hangman.Blls
             var sessionData = new SessionData(token, expiration);
 
             return sessionData;
+        }
+
+		public bool LoggedIn()
+        {
+			var token = GetToken();
+			var expiration = GetExpiration();
+			if(expiration == null)
+            {
+				return false;
+            } else
+            {
+				return !(token == null || DateTime.Parse(expiration) < DateTime.Now);
+            }
         }
 
 

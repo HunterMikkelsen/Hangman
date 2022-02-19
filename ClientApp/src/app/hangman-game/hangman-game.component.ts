@@ -13,6 +13,7 @@ export class HangmanGameComponent implements OnInit {
 
   // calls things before/while the page loads
   constructor(public http: HttpServiceService) {
+    this.http.cdEmitter.emit();
     this.http.GetHighScores()
       .subscribe(h => {
         this.highScores = h;

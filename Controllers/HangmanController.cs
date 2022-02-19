@@ -60,6 +60,13 @@ namespace hangman.Controllers
 		}
 
 		[HttpGet]
+		public JsonResult Logout()
+        {
+			_bll.Logout();
+			return new JsonResult(true);
+        }
+
+		[HttpGet]
 		public JsonResult GetHighScores()
         {
 			var highScores = _bll.GetHighScores();
@@ -74,6 +81,14 @@ namespace hangman.Controllers
 
 			return new JsonResult(sessionData);
 		}
+
+		[HttpGet]
+		public JsonResult LoggedIn()
+        {
+			var loggedIn = _bll.LoggedIn();
+
+			return new JsonResult(loggedIn);
+        }
 
 		[HttpGet]
 		public JsonResult GetToken()
