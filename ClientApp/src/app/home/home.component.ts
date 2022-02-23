@@ -57,19 +57,6 @@ export class HomeComponent {
           this.correctWord = word;
         });
       }
-      else if (!this.wordLengthArray.includes('_')) {
-        // get date
-        let current = new Date();
-        let cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
-        let cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
-        let dateTime = cDate + ' ' + cTime;
-
-        // set highscore data
-        let newScore = new HighScore();
-
-        newScore.DateTime = new Date(dateTime);
-        newScore.Score = this.numGuesses;
-      }
     });
   }
 

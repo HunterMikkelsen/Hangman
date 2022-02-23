@@ -8,6 +8,7 @@
         <tr>
           <th scope="col" class='text-center'>#</th>
           <th scope="col" class='text-center'>Username</th>
+          <th scope="col" class="text-center">Word</th>
           <th scope="col" class='text-center'>Score</th>
           <th scope="col" class='text-center'>Date</th>
         </tr>
@@ -16,7 +17,8 @@
         <!-- need to check for high score in table, highlight row -->
         <tr *ngFor="let score of highScores; let i = index">
           <th scope="row" class="text-center">{{ i + 1 }}</th>
-          <td class="text-center">{{ score.user.username }}</td>
+          <td class="text-center">{{ score.username }}</td>
+          <td class="text-center">{{ score.word }}</td>
           <td class='text-center'>{{ score.score }}</td>
           <td class='text-center'>{{ score.dateTime | date : 'short' }}</td>
         </tr>
@@ -24,6 +26,6 @@
     </table>
   </div>
   <div class="d-grid gap-2 d-md-block mx-auto">
-    <a class="btn btn-primary" href="play_game.php">Play Again</a>
+    <a class="btn btn-primary" [routerLink]="['/']">Play!</a>
   </div>
 </div>

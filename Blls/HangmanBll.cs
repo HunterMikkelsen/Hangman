@@ -34,29 +34,45 @@ namespace hangman.Blls
 
 
 		// GetHighScores returns list of all high scores, ordered by score
-		public IEnumerable<HighScore> GetHighScores()
+		public IEnumerable<HighScoreDto> GetHighScores()
 		{
-			return _ctx.HighScores
+			var highScores = _ctx.HighScores
 				.Select(h => h)
 				.Include(h => h.User)
 				.OrderBy(score => score.Score)
+				.Take(10)
 				.ToList();
+
+			var highScoreDtos = new List<HighScoreDto>();
+
+			highScores.ForEach(highScore =>
+			{
+				var hs = new HighScoreDto();
+				hs.Id = highScore.Id;
+				hs.Score = highScore.Score;
+				hs.DateTime = highScore.DateTime;
+				hs.Username = highScore.User.Username;
+				hs.Word = highScore.Word;
+				highScoreDtos.Add(hs);
+			});
+
+			return highScoreDtos;
 		}
 
-
-		// Add a score to the database
-		public void AddHighScore(int user_id, int score)
-		{
-			// get user from id
+		public void AddHighScore()
+        {
 			var user = _ctx.Users
-				.Where(user => user.Id == user_id)
-				.ToList();
-
-			// add highscore with user and score
-			var high_score = new HighScore { User = user[0], Score = score };
-			_ctx.HighScores.Add(high_score);
+				.Where(user => user.Username == GetToken())
+				.FirstOrDefault();
+			var highScore = new HighScore();
+			highScore.DateTime = DateTime.Now;
+			highScore.Score = GetIncorrectlyGuessedLetters().Length;
+			highScore.User = user;
+			highScore.Word = GetWord();
+			_ctx.HighScores.Add(highScore);
 			_ctx.SaveChanges();
-		}
+
+        }
 
 
 		// Add new user to database
@@ -111,6 +127,11 @@ namespace hangman.Blls
             }
         }
 
+		public void Logout()
+        {
+			_http.Session.Clear();
+        }
+
 
 		// Generate random salt
 		public string GenerateSalt()
@@ -152,6 +173,19 @@ namespace hangman.Blls
             var sessionData = new SessionData(token, expiration);
 
             return sessionData;
+        }
+
+		public bool LoggedIn()
+        {
+			var token = GetToken();
+			var expiration = GetExpiration();
+			if(expiration == null)
+            {
+				return false;
+            } else
+            {
+				return !(token == null || DateTime.Parse(expiration) < DateTime.Now);
+            }
         }
 
 
@@ -288,6 +322,11 @@ namespace hangman.Blls
 
 				pos++;
 			}
+
+			if(!wordLengthString.Contains('_'))
+            {
+				AddHighScore();
+            }
 
 			_http.Session.SetString("WordLengthString", new string(wordLengthString));
 		}

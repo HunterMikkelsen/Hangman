@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Login } from '../angular-models/login.model';
+import { AuthServiceService } from '../Services/auth-service.service';
 import { HttpServiceService } from '../Services/http-service.service';
 
 @Component({
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   validLogin: boolean;
   hasClickedLogin: boolean;
 
-  constructor(private http: HttpServiceService, private router: Router) {
+  constructor(private http: HttpServiceService, private router: Router, private auth: AuthServiceService) {
+
   }
 
   loginUser() {
@@ -26,20 +28,10 @@ export class LoginComponent implements OnInit {
         this.invalidLogin = true;
       } else {
         this.invalidLogin = false;
-        this.http.GetSessionData().subscribe(data => {
-          this.http.token = data.token;
-          this.http.expiration = new Date(data.expiration);
+        this.http.LoggedIn().subscribe(state => {
+          this.auth.loggedIn = state;
           this.router.navigateByUrl("hangman-game");
-          this.validLogin = true;
         })
-        //this.http.GetToken().subscribe(token => {
-        //  this.http.token = token;
-        //})
-        //this.http.GetExpiration().subscribe(expiration => {
-        //  this.http.expiration = new Date(expiration);
-        //})
-        //this.router.navigateByUrl("hangman-game")
-        //this.validLogin = true;
       }
     });
   }

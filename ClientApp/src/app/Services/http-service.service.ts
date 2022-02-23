@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Login } from '../angular-models/login.model';
@@ -13,14 +13,10 @@ import { GameState } from '../angular-models/gamestate.model';
 })
 export class HttpServiceService {
 
-  public token = "";
-  public expiration = new Date();
+  public cdEmitter: EventEmitter<void>;
 
   constructor(private http: HttpClient) {
-    this.GetSessionData().subscribe(data => {
-      this.token = data.token;
-      this.expiration = new Date(data.expiration);
-    });
+    this.cdEmitter = new EventEmitter<void>();
   }
 
   // this is where you'll create methods to do function calls to the controller
@@ -92,27 +88,19 @@ export class HttpServiceService {
       .pipe(catchError(err => this.handleError('Error getting high score data', err)));
   }
 
-  SubmitScore(score: HighScore) {
-    this.http.post('Hangman/SubmitScore', score)
-      .pipe(catchError(err => this.handleError('Error sending high score data', err)));
-  }
-
-  GetToken(): Observable<string> {
-    return this.http.get<string>('Hangman/GetToken')
-      .pipe(catchError(err => this.handleError('Error getting token', err)));
-  }
-
-  GetExpiration(): Observable<string> {
-    return this.http.get<string>('Hangman/GetExpiration')
-      .pipe(catchError(err => this.handleError('Error getting expiration', err)));
-  }
-
-  get LoginRequired(): boolean {
-    return this.token.length === 0 || this.expiration < new Date();
+  LoggedIn(): Observable<boolean> {
+    return this.http.get<boolean>("Hangman/LoggedIn")
+      .pipe(catchError(err => this.handleError("Error checking login state", err)));
   }
 
   LoginUser(login: Login): Observable<boolean> {
+    this.cdEmitter.emit();
     return this.http.post<boolean>('Hangman/LoginUser', login)
+      .pipe(catchError(err => this.handleError('Error signing up for account', err)));
+  }
+
+  Logout(): Observable<boolean> {
+    return this.http.get<boolean>("Hangman/Logout")
       .pipe(catchError(err => this.handleError('Error signing up for account', err)));
   }
 

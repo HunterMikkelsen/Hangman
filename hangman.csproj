@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Compile Remove="ClientApp\Class.cs" />
+    <Compile Remove="ClientApp\HighScoreDto.cs" />
     <Compile Remove="ClientApp\src\app\angular-models\GuessedLetter.cs" />
   </ItemGroup>
 
@@ -54,6 +55,7 @@
 
   <ItemGroup>
     <None Include="GuessedLetter.cs" />
+    <None Include="HighScoreDto.cs" />
   </ItemGroup>
 
   <ItemGroup>
