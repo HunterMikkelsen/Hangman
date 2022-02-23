@@ -37,11 +37,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApp\Class.cs" />
     <Compile Remove="ClientApp\HighScoreDto.cs" />
     <Compile Remove="ClientApp\src\app\angular-models\GuessedLetter.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\angular-models\gamestate.model.ts" />
     <None Remove="ClientApp\src\app\angular-models\guessedLetter.model.ts" />
   </ItemGroup>
 
@@ -57,6 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\angular-models\gamestate.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\angular-models\guessedLetter.model.ts" />
   </ItemGroup>
 

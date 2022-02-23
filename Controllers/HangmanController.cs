@@ -162,5 +162,19 @@ namespace hangman.Controllers
 
 			return new JsonResult(correctWord);
 		}
+
+		[HttpGet]
+		public JsonResult GetGameState()
+        {
+			var gameState = _bll.GetGameState();
+			return new JsonResult(gameState);
+        }
+
+		[HttpPost]
+		public JsonResult SetGameState([FromBody] GameState gameState)
+        {
+			_bll.SetGameState(gameState.State);
+			return new JsonResult(true);
+        }
 	}
 }

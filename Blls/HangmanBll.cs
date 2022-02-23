@@ -112,6 +112,12 @@ namespace hangman.Blls
 				var user = _ctx.Users
 					.Where(user => user.Username == login.Username)
 					.FirstOrDefault();
+
+				if (user == null)
+				{
+					// no username 
+					return false;
+				}
 				var password = GenerateHash(login.Password + user.Salt);
 
                 if (password == user.Password)
@@ -226,6 +232,37 @@ namespace hangman.Blls
 		{
 			_http.Session.SetString("Word", word);
 		}
+
+		//get gameState
+		public Boolean GetGameState()
+        {
+			var gameState = _http.Session.GetString("GameState");
+
+			if(gameState == "true")
+            {
+				return true;
+            }
+            else
+            {
+				return false;
+            }
+        }
+
+		//set gameState
+		public void SetGameState(Boolean gameState)
+        {
+
+            if (gameState)
+            {
+				_http.Session.SetString("GameState", "true");
+            }
+            else
+            {
+				_http.Session.SetString("GameState", "false");
+			}
+			
+        }
+
 
 		//Generate new word
 		public void GenerateWord()

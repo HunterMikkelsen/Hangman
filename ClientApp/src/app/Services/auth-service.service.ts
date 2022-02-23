@@ -7,26 +7,28 @@ import { Login } from "../angular-models/login.model";
 import { HttpServiceService } from "./http-service.service";
 
 @Injectable()
-export class AuthServiceService implements CanActivate, OnInit {
+export class AuthServiceService implements CanActivate{
 
   loggedIn: boolean;
   loginSub: Subscription;
   @Input() LoggedIn$: Observable<boolean>;
 
   constructor(private http: HttpServiceService, private router: Router, private ref: ApplicationRef) {
-    this.http.cdEmitter.subscribe(() => {
-      this.http.LoggedIn().subscribe(state => {
-        this.loggedIn = state;
-        this.ref.tick();
-      });
-    });
-  }
-
-  ngOnInit(): void {
     this.LoggedIn$ = this.http.LoggedIn();
     this.loginSub = this.LoggedIn$.subscribe(state => {
       this.loggedIn = state;
       this.ref.tick();
+
+      if (this.loggedIn) {
+        this.router.navigate(['hangman-game'])
+      }
+
+      this.http.cdEmitter.subscribe(() => {
+        this.http.LoggedIn().subscribe(state => {
+          this.loggedIn = state;
+          this.ref.tick();
+        });
+      });
     });
   }
 

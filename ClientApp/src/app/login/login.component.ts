@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   hasClickedLogin: boolean;
 
   constructor(private http: HttpServiceService, private router: Router, private auth: AuthServiceService) {
-
+    
   }
 
   loginUser() {

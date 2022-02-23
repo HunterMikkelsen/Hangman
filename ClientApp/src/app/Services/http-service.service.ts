@@ -6,6 +6,7 @@ import { Login } from '../angular-models/login.model';
 import { HighScore } from '../angular-models/highscore.model';
 import { GuessedLetter } from '../angular-models/guessedLetter.model';
 import { SessionData } from '../angular-models/sessiondata.model';
+import { GameState } from '../angular-models/gamestate.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,20 @@ export class HttpServiceService {
   GetCorrectWord(): Observable<string> {
     return this.http.get<string>('Hangman/GetWord')
       .pipe(catchError(err => this.handleError('Error getting the correct word', err)));
+  }
+
+  GetGameState(): Observable<boolean> {
+    return this.http.get<boolean>('Hangman/GetGameState')
+      .pipe(catchError(err => this.handleError('Error getting the correct game state', err)));
+  }
+
+  SetGameState(state: boolean): Observable<boolean>{
+    let gameState = new GameState();
+
+    gameState.State = state;
+
+    return this.http.post<boolean>('Hangman/SetGameState', gameState)
+      .pipe(catchError(err => this.handleError('Error getting the correct game state', err)));
   }
 
   SignUpForAccount(login: Login): Observable<boolean> {

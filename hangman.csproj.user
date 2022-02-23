@@ -9,6 +9,11 @@
     <Controller_SelectedScaffolderCategoryPath>root/Common/MVC/Controller</Controller_SelectedScaffolderCategoryPath>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Update="ClientApp\src\app\angular-models\gamestate.model.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+  </ItemGroup>
+  <ItemGroup>
     <TypeScriptCompile Update="ClientApp\src\app\angular-models\guessedLetter.model.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
