@@ -89,13 +89,12 @@ export class HomeComponent {
   }
 
   startGame() {
-    let value = true;
-    this.httpService.SetGameState(value);
+    this.httpService.SetGameState(true).subscribe();
     this.gameInSession = true;
   }
 
   resetGame() {
-    this.httpService.SetGameState(false);
+    this.httpService.SetGameState(false).subscribe();
     this.numGuesses = 0;
     this.gameInSession = false;
     this.initializeGame(false);

@@ -156,9 +156,9 @@ namespace hangman.Controllers
         }
 
 		[HttpPost]
-		public JsonResult SetGameState([FromBody] bool gameState)
+		public JsonResult SetGameState([FromBody] GameState gameState)
         {
-			_bll.SetGameState(gameState);
+			_bll.SetGameState(gameState.State);
 			return new JsonResult(true);
         }
 	}
