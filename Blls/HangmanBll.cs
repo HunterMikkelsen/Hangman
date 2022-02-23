@@ -91,6 +91,8 @@ namespace hangman.Blls
 				var password = GenerateHash(login.Password + salt);
 				var user = new User { Username = login.Username, Password = password, Salt = salt };
 				_ctx.Users.Add(user);
+				SetToken(login.Username);
+				SetExpiration(DateTime.Today.AddDays(7).ToString());
 				return _ctx.SaveChanges() > 0;
 			}
 			catch (Exception ex)
