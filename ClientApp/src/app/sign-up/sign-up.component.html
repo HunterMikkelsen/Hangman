@@ -19,7 +19,7 @@
 
       <div class="row my-2 mt-3">
         <input type="password" class="form-control col-xs-2 mx-auto" name="password" placeholder="Password" autocomplete="off" maxlength="30" [(ngModel)]="login.Password" required />
-        <input type="password" class="form-control col-xs-2 mx-auto mt-1" name="passwordCheck" placeholder="Verify Password" autocomplete="off" maxlength="30" [(ngModel)]="passwordCheck" required />
+        <input type="password" class="form-control col-xs-2 mx-auto mt-1" name="passwordCheck" placeholder="Verify Password" autocomplete="off" maxlength="30" [(ngModel)]="passwordCheck" required  (keyup.enter)="addUser()"/>
       </div>
     </div>
     <input type="button" class="btn btn-primary mt-1" value="Sign up" (click)="addUser()" />

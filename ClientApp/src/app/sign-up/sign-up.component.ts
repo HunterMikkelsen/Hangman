@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Login } from '../angular-models/login.model';
 import { HttpServiceService } from '../Services/http-service.service';
+import { Router } from '@angular/router';
+import { AuthServiceService } from '../Services/auth-service.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +19,7 @@ export class SignUpComponent implements OnInit {
   passwordsDontMatch: boolean;
   hasClickedLogin: boolean;
 
-  constructor(httpService: HttpServiceService) {
+  constructor(httpService: HttpServiceService, private router: Router, private auth: AuthServiceService) {
     this.httpService = httpService;
   }
 
@@ -41,6 +43,10 @@ export class SignUpComponent implements OnInit {
           this.login.Username = "";
           this.login.Password = "";
           this.passwordCheck = "";
+          this.httpService.LoggedIn().subscribe(state => {
+            this.auth.loggedIn = state;
+            this.router.navigateByUrl("hangman-game");
+          })
         }
       });
     }
