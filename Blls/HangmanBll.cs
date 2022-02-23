@@ -112,6 +112,12 @@ namespace hangman.Blls
 				var user = _ctx.Users
 					.Where(user => user.Username == login.Username)
 					.FirstOrDefault();
+
+				if (user == null)
+				{
+					// no username 
+					return false;
+				}
 				var password = GenerateHash(login.Password + user.Salt);
 
                 if (password == user.Password)
